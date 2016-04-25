@@ -1,0 +1,20 @@
+{
+  "name": "rabbitmq-offline",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node_modules/.bin/mocha test/unit_test/**/*.js"
+  },
+  "author": "Ivan",
+  "license": "ISC",
+  "dependencies": {
+    "amqplib": "^0.4.1",
+    "co": "^4.6.0",
+    "lodash": "^4.11.1"
+  },
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "mocha": "^2.4.5"
+  }
+}

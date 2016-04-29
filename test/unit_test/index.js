@@ -4,25 +4,14 @@ const chai = require('chai')
 const expect = chai.expect
 const co = require('co')
 
-const Factory = require('../../')
+const Producer = require('../../').Producer
+const Consumer = require('../../').Consumer
 
 describe('Offline', () => {
-	let factory
-
-	before((done) => {
-		factory = new Factory()
-		done()
-	})
-
-	after((done) => {
-		factory.close()
-		factory = null
-		done()
-	})
 
 	it('Producer init', (done) => {
 		co(function*() {
-			let producer = yield factory.createProducer()
+			let producer = new Producer()
 			yield producer.publish('Test01', 'Hello World')
 			yield producer.close()
 		}).then(() => {}).then(done).catch(done)
@@ -30,7 +19,7 @@ describe('Offline', () => {
 
 	it('Consumer init', (done) => {
 		co(function*() {
-			let consumer = yield factory.createConsumer()
+			let consumer = new Consumer()
 			yield consumer.consume('Test01', 'Block_01', () => {})
 			yield consumer.close()
 		}).then(() => {}).then(done).catch(done)
@@ -38,8 +27,8 @@ describe('Offline', () => {
 
 	it('Producer && Consumer', (done) => {
 		co(function*() {
-			let producer = yield factory.createProducer()
-			let consumer = yield factory.createConsumer()
+			let producer = new Producer()
+			let consumer = new Consumer()
 			let content = 'Hello World'
 
 			yield consumer.consume('Test02', 'Block_02', (message) => {

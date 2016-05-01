@@ -1,7 +1,10 @@
 'use strict'
 
+let options = {
+	namespace: 'test.offline'
+}
 let Producer = require('../').Producer
-let producer = new Producer()
+let producer = new Producer(options)
 
 setInterval(() => {
 	let content = new Date().toString()

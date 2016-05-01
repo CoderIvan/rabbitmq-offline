@@ -1,7 +1,10 @@
 'use strict'
 
+let options = {
+	namespace: 'test.offline'
+}
 let Consumer = require('../').Consumer
-let consumer = new Consumer()
+let consumer = new Consumer(options)
 
 let array = [
 	['01', 'DEFAULT'],

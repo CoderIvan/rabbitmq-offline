@@ -10,8 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "amqplib": "^0.4.1",
-    "co": "^4.6.0",
-    "lodash": "^4.11.1"
+    "bluebird": "^3.3.5"
   },
   "devDependencies": {
     "chai": "^3.5.0",

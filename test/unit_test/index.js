@@ -2,7 +2,7 @@
 
 const chai = require('chai')
 const expect = chai.expect
-const co = require('co')
+const bluebird = require('bluebird')
 
 const Producer = require('../../').Producer
 const Consumer = require('../../').Consumer
@@ -10,23 +10,23 @@ const Consumer = require('../../').Consumer
 describe('Offline', () => {
 
 	it('Producer init', (done) => {
-		co(function*() {
+		bluebird.coroutine(function*() {
 			let producer = new Producer()
 			yield producer.publish('Test01', 'Hello World')
 			yield producer.close()
-		}).then(() => {}).then(done).catch(done)
+		})().then(() => {}).then(done).catch(done)
 	})
 
 	it('Consumer init', (done) => {
-		co(function*() {
+		bluebird.coroutine(function*() {
 			let consumer = new Consumer()
 			yield consumer.consume('Test01', 'Block_01', () => {})
 			yield consumer.close()
-		}).then(() => {}).then(done).catch(done)
+		})().then(() => {}).then(done).catch(done)
 	})
 
 	it('Producer && Consumer', (done) => {
-		co(function*() {
+		bluebird.coroutine(function*() {
 			let producer = new Producer()
 			let consumer = new Consumer()
 			let content = 'Hello World'
@@ -39,6 +39,6 @@ describe('Offline', () => {
 
 			yield producer.close()
 			yield consumer.close()
-		}).catch(done)
+		})().catch(done)
 	})
 })

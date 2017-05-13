@@ -1,44 +1,37 @@
-'use strict'
+const { expect } = require('chai')
 
-const chai = require('chai')
-const expect = chai.expect
-const bluebird = require('bluebird')
-
-const Producer = require('../../').Producer
-const Consumer = require('../../').Consumer
+const { Producer, Consumer } = require('../../')
 
 describe('Offline', () => {
-
-	it('Producer init', (done) => {
-		bluebird.coroutine(function*() {
-			let producer = new Producer()
-			yield producer.publish('Test01', 'Hello World')
-			yield producer.close()
-		})().then(() => {}).then(done).catch(done)
+	it('Producer init', async () => {
+		const producer = new Producer()
+		await producer.publish('Test01', 'Hello World')
+		await producer.close()
 	})
 
-	it('Consumer init', (done) => {
-		bluebird.coroutine(function*() {
-			let consumer = new Consumer()
-			yield consumer.consume('Test01', 'Block_01', () => {})
-			yield consumer.close()
-		})().then(() => {}).then(done).catch(done)
+	it('Consumer init', async () => {
+		const consumer = new Consumer()
+		await consumer.consume('Test01', 'Block_01', () => {})
+		await consumer.close()
 	})
 
-	it('Producer && Consumer', (done) => {
-		bluebird.coroutine(function*() {
-			let producer = new Producer()
-			let consumer = new Consumer()
-			let content = 'Hello World'
+	it('Producer && Consumer', async () => {
+		const producer = new Producer()
+		const consumer = new Consumer()
+		const content = 'Hello World'
 
-			yield consumer.consume('Test02', 'Block_02', (message) => {
+		const p = new Promise((resolve) => {
+			consumer.consume('Test02', 'Block_02', (message) => {
 				expect(message).eql(content)
-				done()
+				resolve()
 			})
-			yield producer.publish('Test02', content)
+		})
 
-			yield producer.close()
-			yield consumer.close()
-		})().catch(done)
+		await producer.publish('Test02', content)
+
+		await p
+
+		await producer.close()
+		await consumer.close()
 	})
 })
